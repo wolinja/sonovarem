@@ -24,14 +24,15 @@ Every figure is reported with a 95% interval, because our samples are small:
 |---|---|---|---|
 | Browser (Zone 0) | Feedback and first-audio timings; abandons after echo-back | Latency or trust problems the server cannot see | 95th pct first audio > 20 s for a day; abandons > 2× baseline |
 | Cloudflare, Traefik (TB1, TB2) | OTP requests; rate-limit hits; Turnstile failures | Abuse, cost attacks, slow extraction | > 3× baseline |
+| `api`, speculative lane *(added 2026-10-02)* | Paid speculative work discarded after a "no", per user and in total; echo-back rejections per user | Denial of wallet: a script that rejects every echo-back | Any user above a provisional daily discarded-spend limit; total above 20% of the day's spend. Alerts before any provider cap is reached |
 | `langgw`, reply from ASR (TB4) | Confidence distribution; language mismatch; corrections | Accent, dialect or noise shift; a missing farm term | Median confidence drops > 0.1 week on week |
 | `api`, echo-back | Confirms and rejections | The farmer's verdict on what we heard | Rejections > 1.5× baseline for a week |
-| `langgw`, reply from MT (TB4) | Placeholder survival; glossary misses | Translation corrupting numbers or terms | Survival < 95% |
+| `langgw`, reply from MT (TB4) | Placeholder survival; glossary misses; back-translation mismatches on safety sentences *(amended 2026-10-02)* | Translation corrupting numbers, terms or meaning | Survival < 95%; any rise in safety-sentence mismatches is reviewed within a day |
 | `api`, reply from LLM (TB4) | Intent mix; unknown intents; invalid outputs | Questions we did not build for; model change | Unknown intent > 15% of a week; invalid > 2% |
 | Embedder and search index | Top retrieval scores; "I don't know" rate by intent; corpus version | Documents no longer match questions | "I don't know" rate doubles for one intent |
 | Guards in `api` | Verdicts by rule (pass, replace, block) | Drift towards unsafe content | Replacements > 2× baseline; every G-DOSE block reviewed within a day |
 | `langgw`, reply from TTS (TB4) | Failures; cache hits | Silent answers | Failures > 2% |
-| IoT intake (TB5) | Readings per hour; HMAC and plausibility rejects; simulated readings in farmer turns | Sensor failure, spoofing, fake data in advice | Node silent > 2× its interval; any simulated reading in a farmer turn |
+| IoT intake (TB5) | Readings per hour; HMAC, replay (stale timestamp or reused nonce) and plausibility rejects; simulated readings in farmer turns | Sensor failure, spoofing, replay, fake data in advice | Node silent > 2× its interval; any replay reject; any simulated reading in a farmer turn |
 | All external services (TB4) | Model version, errors, latency, spend per provider | Silent upstream change; outage; overspend | Any version change triggers the canary; spend > daily cap |
 | Postgres (turn records) | Ratings; "that's wrong"; deletion requests | User-level quality, the slowest signal | Negative ratings > 30% of a week |
 | Whole pipeline | **Canary:** weekly rerun of a frozen subset of the Twi test questions | Drift that live signals miss | INS on the subset falls outside its week-7 interval |
@@ -44,5 +45,5 @@ Every point writes to the same per-turn record (step timestamps, model versions,
 |---|---|---|
 | A poisoned source document with a plausible wrong dose | G-DOSE checks doses against the source itself | Hash and sign the source manifest; a second member diffs every corpus update |
 | Quality loss for one group only (older speakers, another dialect) | Triggers watch averages | Report ASR confidence, rejections and the canary by age band and dialect |
-| A wrong translation with no numbers in it | Echo-back checks what we heard, not what we translated | The first answer sentence restates the question in Twi; back-translation sample in the canary |
+| A wrong translation with no numbers in it | Echo-back checks what we heard, not what we translated | The first answer sentence restates the question in Twi; runtime back-translation of safety sentences *(added 2026-10-02)*; a back-translation sample of all sentences in the weekly canary. Residual: a meaning change in a sentence with no dose, product or warning |
 | Slow extraction across many accounts | Each account stays under its rate limit | Watch total volume per question pattern across accounts |
