@@ -5,10 +5,6 @@ dev = [
     "zizmor>=1.29.0",
 ]
 
-github-actions = [
-    "smokeshow >=0.5.0",
-]
-
 [tool.uv.workspace]
 members = ["backend"]
 
@@ -31,6 +27,10 @@ extend-ignore-re = [
     # Name of the package in the PR title
     "Bump certifi ",
 ]
+
+[tool.typos.default.extend-words]
+# Creative Commons licence term (NC-ND) in the spec
+ND = "ND"
 
 [tool.typos.default.extend-identifiers]
 alls = "alls"

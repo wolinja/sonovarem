@@ -18,7 +18,8 @@ services:
       - --log
 
   db:
-    image: postgres:18
+    # Postgres with pgvector for retrieval (P1-05 §3)
+    image: pgvector/pgvector:pg18
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d app"]
       interval: 10s
@@ -31,20 +32,15 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?Variable not set}
       - POSTGRES_DB=app
 
-  adminer:
-    image: adminer
-    depends_on:
-      - db
-    environment:
-      - ADMINER_DESIGN=pepa-linha-dark
-    labels:
-      # Enable Traefik for this service
-      - traefik.enable=true
-      # Route HTTP traffic for the Adminer subdomain
-      - traefik.http.routers.adminer-http.rule=Host(`adminer.${DOMAIN:-localhost}`)
-      - traefik.http.routers.adminer-http.entrypoints=http
-      # Define the port inside of the Docker service to use
-      - traefik.http.services.adminer.loadbalancer.server.port=8080
+  redis:
+    image: redis:8-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      retries: 5
+      timeout: 5s
+    volumes:
+      - app-redis-data:/data
 
   backend:
     image: backend:latest
@@ -52,15 +48,11 @@ services:
       db:
         condition: service_healthy
         restart: true
+      redis:
+        condition: service_healthy
     environment:
       PROJECT_NAME: ${PROJECT_NAME:?Variable not set}
       SECRET_KEY: ${SECRET_KEY:?Variable not set}
-      FIRST_SUPERUSER: ${FIRST_SUPERUSER:?Variable not set}
-      FIRST_SUPERUSER_PASSWORD: ${FIRST_SUPERUSER_PASSWORD:?Variable not set}
-      SMTP_HOST: ${SMTP_HOST}
-      SMTP_USER: ${SMTP_USER:-}
-      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
-      EMAILS_FROM_EMAIL: ${EMAILS_FROM_EMAIL}
       DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:?Variable not set}@db:5432/app
       SENTRY_DSN: ${SENTRY_DSN:-}
 
@@ -86,3 +78,4 @@ services:
 
 volumes:
   app-db-data:
+  app-redis-data:

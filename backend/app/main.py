@@ -33,4 +33,7 @@ app.add_middleware(
 )
 
 app.include_router(api_router, prefix=settings.API_V1_STR)
-app.frontend("/", directory=FRONTEND_DIR)
+# The built frontend is copied here by the Docker image; skip it when absent
+# (local API-only runs and backend tests)
+if FRONTEND_DIR.is_dir():
+    app.frontend("/", directory=FRONTEND_DIR)
