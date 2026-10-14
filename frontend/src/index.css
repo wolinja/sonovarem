@@ -1,9 +1,122 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "@fontsource-variable/hanken-grotesk/wght.css";
+@import "@fontsource-variable/geist/wght.css";
+/* Twi letters (Ɛ ɛ Ɔ ɔ) are missing from Hanken Grotesk and Geist; Noto Sans has them (OQ-U6). */
+@import "@fontsource/noto-sans/latin-ext-400.css";
+@import "@fontsource/noto-sans/latin-ext-600.css";
+@import "@fontsource/noto-sans/latin-ext-700.css";
+@import "@fontsource/noto-sans/latin-400.css";
+@import "@fontsource/noto-sans/latin-600.css";
+@import "@fontsource/noto-sans/latin-700.css";
+@import "material-symbols/outlined.css";
 
-@custom-variant dark (&:is(.dark *));
+/*
+ * Design tokens. Values follow the J1/J2 mockups (mockups/J1, mockups/J2), which supersede the
+ * provisional palette in P1-04 §5.2. Light only (P1-04 §5.2): no dark set.
+ */
+:root {
+  color-scheme: light;
+
+  --color-bg: #f8faf8;
+  --color-surface: #ffffff;
+  --color-surface-sunken: #f2f4f2;
+  --color-text: #191c1b;
+  --color-text-muted: #3f4942;
+  --color-border-strong: #6f7a71;
+  --color-border-subtle: #e1e3e1;
+  --color-border-input: #bfc9bf;
+
+  --color-primary: #0d6840;
+  --color-primary-deep: #004e2e;
+  --color-on-primary: #ffffff;
+  --color-on-primary-soft: #93e4b2;
+  --color-accent: #a7d649;
+  --color-on-accent: #004e2e;
+  --color-accent-tint: #f2fadf;
+
+  --color-attention-bg: #fff3d1;
+  --color-attention-text: #7a4b00;
+  --color-attention-border: #b7791f;
+  --color-problem-bg: #fdece3;
+  --color-problem-text: #9a3412;
+  --color-neutral-face: #5e6a63;
+  /* Toasts (mockups/J4 S05e) and the "current" highlight (echo marks, OTP slot ring) */
+  --color-inverse-surface: #2e3130;
+  --color-on-inverse: #f0f1ef;
+  --color-inverse-icon: #86d7a6;
+  --color-highlight: #c2f362;
+
+  --shadow-card: 0 0 30px 0 rgb(0 0 0 / 0.04);
+  --shadow-card-strong: 0 0 30px 0 rgb(0 0 0 / 0.06);
+  --shadow-record: 0 4px 16px rgb(0 78 46 / 0.18);
+
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* shadcn primitives (dialog, sheet, sonner) read these names */
+  --radius: 1rem;
+  --background: var(--color-bg);
+  --foreground: var(--color-text);
+  --card: var(--color-surface);
+  --card-foreground: var(--color-text);
+  --popover: var(--color-surface);
+  --popover-foreground: var(--color-text);
+  --primary: var(--color-primary);
+  --primary-foreground: var(--color-on-primary);
+  --secondary: var(--color-accent-tint);
+  --secondary-foreground: var(--color-primary-deep);
+  --muted: var(--color-surface-sunken);
+  --muted-foreground: var(--color-text-muted);
+  --accent: var(--color-accent-tint);
+  --accent-foreground: var(--color-primary-deep);
+  --destructive: var(--color-problem-text);
+  --border: var(--color-border-subtle);
+  --input: var(--color-border-strong);
+  --ring: var(--color-primary-deep);
+}
 
 @theme inline {
+  --font-sans: "Hanken Grotesk Variable", "Noto Sans", system-ui, sans-serif;
+  --font-ui:
+    "Geist Variable", "Noto Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-twi: "Noto Sans", system-ui, sans-serif;
+
+  --color-bg: var(--color-bg);
+  --color-surface: var(--color-surface);
+  --color-sunken: var(--color-surface-sunken);
+  --color-ink: var(--color-text);
+  --color-ink-muted: var(--color-text-muted);
+  --color-line: var(--color-border-strong);
+  --color-line-subtle: var(--color-border-subtle);
+  --color-line-input: var(--color-border-input);
+  --color-brand: var(--color-primary);
+  --color-brand-deep: var(--color-primary-deep);
+  --color-on-brand: var(--color-on-primary);
+  --color-on-brand-soft: var(--color-on-primary-soft);
+  --color-lime: var(--color-accent);
+  --color-on-lime: var(--color-on-accent);
+  --color-lime-tint: var(--color-accent-tint);
+  --color-attention-bg: var(--color-attention-bg);
+  --color-attention: var(--color-attention-text);
+  --color-attention-line: var(--color-attention-border);
+  --color-problem-bg: var(--color-problem-bg);
+  --color-problem: var(--color-problem-text);
+  --color-neutral-face: var(--color-neutral-face);
+  --color-toast: var(--color-inverse-surface);
+  --color-on-toast: var(--color-on-inverse);
+  --color-toast-icon: var(--color-inverse-icon);
+  --color-highlight: var(--color-highlight);
+
+  --shadow-card: var(--shadow-card);
+  --shadow-card-strong: var(--shadow-card-strong);
+  --shadow-record: var(--shadow-record);
+
+  --radius-card: 2rem;
+  --radius-panel: 1.5rem;
+  --radius-row: 1rem;
+  --radius-input: 12px;
+
+  /* shadcn primitive mapping */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -26,99 +139,116 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+
+  --animate-pulse-ring: pulse-ring 1.2s var(--ease-out) infinite;
+  --animate-level: level 0.9s ease-in-out infinite alternate;
+  --animate-shake: shake 0.32s var(--ease-out) 1;
 }
 
-:root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.5982 0.10687 182.4689);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.5982 0.10687 182.4689);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.25);
+    opacity: 0;
+  }
 }
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.65 0.10687 182.4689);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.65 0.10687 182.4689);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+@keyframes level {
+  from {
+    transform: scaleY(0.3);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-6px);
+  }
+  75% {
+    transform: translateX(6px);
+  }
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
+  }
+  html {
+    /* Respect the system font size: the root is never set in px (P1-04 §5.3) */
+    -webkit-text-size-adjust: 100%;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-bg font-sans text-ink antialiased;
+    margin: 0;
+  }
+  :lang(tw) {
+    font-family: var(--font-twi);
+  }
+  a {
+    color: var(--color-primary-deep);
   }
   button,
   [role="button"] {
     cursor: pointer;
+  }
+  :where(a, button, input, textarea, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-primary-deep);
+    outline-offset: 2px;
+  }
+  .ms {
+    /* biome-ignore lint/a11y/useGenericFontNames: an icon font has no generic fallback */
+    font-family: "Material Symbols Outlined";
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    white-space: nowrap;
+    direction: ltr;
+    font-feature-settings: "liga";
+    -webkit-font-smoothing: antialiased;
+    font-variation-settings:
+      "FILL" 0,
+      "wght" 600,
+      "GRAD" 0,
+      "opsz" 24;
+    user-select: none;
+  }
+  .ms.fill {
+    font-variation-settings:
+      "FILL" 1,
+      "wght" 600,
+      "GRAD" 0,
+      "opsz" 24;
+  }
+  .ms.bold {
+    font-variation-settings:
+      "FILL" 0,
+      "wght" 700,
+      "GRAD" 0,
+      "opsz" 48;
+  }
+}
+
+/*
+ * Unlayered on purpose: Tailwind utilities live in @layer, and an unlayered rule beats any layered
+ * rule, so this wins over every animate-* and transition-* class without !important.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+    transition-duration: 0.01ms;
   }
 }
