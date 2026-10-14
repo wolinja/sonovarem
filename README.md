@@ -11,7 +11,8 @@ This repository is our capstone for **ICS 591: Building Secure Intelligent Syste
 | | |
 |---|---|
 | **Specification** | [`spec/`](spec/): scope, architecture, measurement plan and design decisions. Later milestones amend it in place; see [`spec/CHANGELOG.md`](spec/CHANGELOG.md) |
-| **Status** | Milestone 1 (2026-10-01): framing, architecture and measurement plan. No application code is committed yet; it follows from Milestone 2 |
+| **Status** | Milestone 1 (2026-10-01): framing, architecture and measurement plan. The application scaffold (FastAPI backend, React frontend, Docker Compose) is in place; features follow from Milestone 2 |
+| **Develop** | [`development.md`](development.md) to run it locally; [`deployment-docker-compose.md`](deployment-docker-compose.md) to deploy; [`CONTRIBUTING.md`](CONTRIBUTING.md) for the team workflow |
 | **Due** | 2026-12-15 |
 
 ## How the system works
@@ -38,7 +39,7 @@ All speech and translation calls go through a reusable **language gateway** (`la
 | Twi speech and translation | Chosen at our week-2 comparison |
 | Hosting | Docker Compose on a Hetzner VPS, behind Traefik and Cloudflare |
 
-The backend and frontend start from the [Full Stack FastAPI Template](https://github.com/fastapi/full-stack-fastapi-template) (MIT licence; see [`LICENSE`](LICENSE)).
+The backend and frontend start from the [Full Stack FastAPI Template](https://github.com/fastapi/full-stack-fastapi-template) (MIT licence; see [`LICENSE`](LICENSE)), with its users, items, email login and release tooling removed.
 
 ## Team
 
