@@ -10,13 +10,10 @@ The repository holds a FastAPI backend (`backend/`) and a React, Vite and TypeSc
 
 ## The `.env` file
 
-The backend and Compose read settings from `.env` at the repository root. It is git-ignored; never commit it. Create it with local-only values:
+The backend and Compose read settings from `.env` at the repository root. It is git-ignored; never commit it. Create it from the tracked template and replace each `changethis` with a local-only value:
 
-```env
-FASTAPI_ENV=development
-SECRET_KEY=<any long random string>
-POSTGRES_PASSWORD=<local password>
-DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432/app
+```bash
+cp .env.example .env
 ```
 
 Generate random values with `python -c 'import secrets; print(secrets.token_urlsafe(32))'`. Outside development, the backend refuses to start if a secret is still `changethis`.
@@ -50,7 +47,7 @@ bun run dev
 | API | <http://localhost:8000> |
 | API docs | <http://localhost:8000/docs> |
 
-The Vite server calls the API at the URL in `frontend/.env` (`VITE_API_URL`).
+The Vite server calls the API at the URL in `frontend/.env` (`VITE_API_URL`). Create it with `cp frontend/.env.example frontend/.env`.
 
 ## Full stack in Docker Compose
 
