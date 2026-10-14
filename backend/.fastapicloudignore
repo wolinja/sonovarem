@@ -1,0 +1,12 @@
+# FastAPI Cloud uploads this directory and respects .gitignore.
+# The built frontend is Git-ignored, so un-ignore it to ship it with the API.
+!app/frontend/
+
+# Not needed at runtime
+tests/
+htmlcov/
+Dockerfile
+.dockerignore
+
+# Locked dependencies, exported from the workspace uv.lock before each deploy
+!pylock.toml
