@@ -30,6 +30,12 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+
+    /* The voice journeys record real audio: Chromium's fake microphone, permission pre-granted. */
+    permissions: ['microphone'],
+    launchOptions: {
+      args: ['--use-fake-ui-for-media-stream', '--use-fake-device-for-media-stream'],
+    },
   },
 
   /* Configure projects for major browsers */
