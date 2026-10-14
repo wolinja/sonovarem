@@ -9,3 +9,6 @@ backend/app/frontend/
 
 # Local secrets (never commit)
 .env
+
+# Exported for FastAPI Cloud deploys (see deployment-fastapi-cloud.md)
+backend/pylock.toml
