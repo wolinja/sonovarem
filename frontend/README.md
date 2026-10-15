@@ -29,7 +29,16 @@ Every farmer journey in P1-04 (`docs/nexus/phase-1/ux-architecture.md`) works en
 | `/sign-in`, `/sign-in/code` | S06 phone and consent, S07 code | `mockups/J3` |
 | `/settings`, `/settings/delete` | S08 settings, S09 delete | `mockups/J3`, `J5` |
 
-Error states other than offline (nothing heard, timeout, rate limited, server) have no mockup yet and follow P1-04 §3.3. The team views in `mockups/J6` (S10 rater scoring, S11 operator review) are not built.
+Error states other than offline (nothing heard, timeout, rate limited, server) have no mockup yet and follow P1-04 §3.3.
+
+### Team views
+
+| Route | Screen | Mockup |
+|---|---|---|
+| `/team/rate` | S10 Rater scoring: audio (0.75× / 1.0×), transcript, pivot, answer, cited passage, rubric; keys 1–5, R, N; break hint at 25 min; dialect and age asked once | `mockups/J6` |
+| `/team/review` | S11 Operator review: filters, turn list, detail with sources and soil/weather context, reason tag and note, CSV export of tagged turns | `mockups/J6` |
+
+They are laptop-first (two columns from 1024 px) and skip the farmer onboarding guards: the server enforces the `rater` / `operator` role (P1-05 TB6). They use `api.admin.*`, which maps to the `/v1/admin` routes in P1-05 §4.2. In mock mode the batch starts at item 12 of 40, and scores, tags and the rater profile persist in `localStorage` (`sv-mock-team`).
 
 ## How it is built
 
@@ -75,7 +84,8 @@ http://localhost:5173/?scenario=idk&timescale=0.1&audio=off
 - **Twi glyphs (OQ-U6):** Hanken Grotesk and Geist lack Ɛ ɛ Ɔ ɔ. Text marked `lang="tw"` uses Noto Sans, which has them.
 - **Red is replaced by burnt orange** (the `problem` tokens) everywhere the mockups use `#ffdad6` / `#93000a` / `#ba1a1a`: the "It did not" face, the offline icon, the blocked microphone, and the delete screen and row. This follows P1-04 §5.2 and OQ-U11 (red reads as mourning). It is one token pair in `src/index.css` if the owner decides otherwise.
 - **Voice yes/no** (consent and echo-back) needs ASR. For now, the farmer taps. The screens still speak each step. For the same reason the S05e recap leaves out "Say 'tell me more'".
-- **Proposed contract additions** (fold into P1-05 §4.2–4.3 before the backend is built): `Citation.page`, `clarify.reason_en`, `FallbackItem.icon` and `MemoryItem.kind`. All are optional, so a backend without them still works.
+- **Proposed contract additions** (fold into P1-05 §4.2–4.3 before the backend is built): `Citation.page`, `clarify.reason_en`, `FallbackItem.icon` and `MemoryItem.kind`. All are optional, so a backend without them still works. The team views also need three routes P1-05 does not list yet: `PUT /v1/admin/rater/profile`, `PUT /v1/admin/turns/{id}/tag` and `GET /v1/admin/turns/export`. The rater and turn response shapes (`RaterBatch`, `AdminTurnDetail`) are proposals too.
+- **Team audio progress** is timed from the clip duration the server sends, because the shared player does not expose the audio element's position.
 - **S06 asks for the number and both consent layers on one screen** (mockups/J3), without the separate read-back step in P1-04 §3.4. Each digit is still spoken as it is typed. Memory stays opt-in: no answer counts as no. Recordings "Yes" is disabled until IRB approval (`RECORDINGS_CONSENT_AVAILABLE`).
 - **S09 keeps the second confirmation** that the mockup promises ("I will ask you once more"): "Yes, delete everything" leads to "Are you sure?" and "Delete for good".
 - **S08 listening switches** are stored on the device (`sv-session.prefs`): "Always wait for me to tap stop" turns off the silence stop, "Always ask me to confirm" turns off the implicit yes, and "Don't play prompts by themselves" silences automatic prompts (taps on Hear this still play). They should move to `PATCH /v1/me` once it exists.
