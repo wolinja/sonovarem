@@ -24,11 +24,15 @@ function setPlaying(value: boolean) {
   for (const l of listeners) l(value)
 }
 
-function playElement(url: string): {
+function playElement(
+  url: string,
+  rate: number,
+): {
   done: Promise<PlayResult>
   stop(): void
 } {
   const el = new Audio(url)
+  el.playbackRate = rate
   let finish: (r: PlayResult) => void = () => {}
   const done = new Promise<PlayResult>((resolve) => {
     finish = resolve
@@ -80,7 +84,8 @@ export const player = {
     return c?.state === "running" || !c
   },
 
-  async playClip(url: string): Promise<PlayResult> {
+  /** `rate` slows or speeds playback (the rater view offers 0.75×). */
+  async playClip(url: string, { rate = 1 } = {}): Promise<PlayResult> {
     player.stop()
     let handle: { done: Promise<PlayResult>; stop(): void }
     if (url === "speech:fail") {
@@ -89,12 +94,12 @@ export const player = {
     if (url.startsWith("speech:")) {
       const [, lang, text] = url.split(":")
       handle = standIn(
-        speakStandIn(decodeURIComponent(text ?? ""), lang as Lang),
+        speakStandIn(decodeURIComponent(text ?? ""), lang as Lang, rate),
       )
     } else if (devFlags.audio === "off") {
       handle = standIn(speakStandIn("(clip)", "en"))
     } else {
-      handle = playElement(url)
+      handle = playElement(url, rate)
     }
     current = handle
     setPlaying(true)

@@ -40,6 +40,7 @@ const logged = new Set<string>()
 export function speakStandIn(
   text: string,
   lang: "en" | "tw" = "en",
+  rate = 1,
 ): SpeakHandle {
   if (import.meta.env.DEV && !logged.has(text)) {
     logged.add(text)
@@ -55,7 +56,7 @@ export function speakStandIn(
   })
   const utterance = new SpeechSynthesisUtterance(text)
   utterance.lang = "en-GB"
-  utterance.rate = 0.95
+  utterance.rate = 0.95 * rate
   utterance.onend = () => finish("ended")
   utterance.onerror = (e) =>
     finish(
@@ -64,7 +65,10 @@ export function speakStandIn(
         : "failed",
     )
   // Some browsers never fire onend (no voices, background tab): do not hang the turn.
-  const safety = setTimeout(() => finish("ended"), estimateMs(text) * 2 + 2000)
+  const safety = setTimeout(
+    () => finish("ended"),
+    (estimateMs(text) * 2) / rate + 2000,
+  )
   done.finally(() => clearTimeout(safety))
   synth.cancel()
   synth.speak(utterance)
