@@ -5,6 +5,8 @@
  * not change.
  */
 
+import type { Citation } from "./events"
+
 export type Mode = "twi_voice" | "english_voice" | "english_text"
 export type Lang = "tw" | "en"
 export type ConsentMethod = "tap" | "voice"
@@ -154,6 +156,7 @@ export class ApiError extends Error {
       | "otp_expired"
       | "otp_locked"
       | "not_found"
+      | "forbidden"
       | "not_implemented",
     readonly retryable: boolean,
     message?: string,
@@ -162,4 +165,112 @@ export class ApiError extends Error {
     super(message ?? code)
     this.name = "ApiError"
   }
+}
+
+// ---- Team views (P1-05 §4.2 /v1/admin/*, roles rater / operator; P1-04 S10, S11) ----------
+
+/** Where a turn came from: a field session with the team, or live use. */
+export type TurnSource = "field" | "live"
+
+export type AnswerKind = "answer" | "dose" | "idk"
+
+/** S10: one turn to score, with everything the rater compares side by side. */
+export interface RaterItem {
+  id: string
+  turn_ref: string
+  mode: Mode
+  topic: string
+  kind: AnswerKind
+  question_audio_url?: string
+  answer_audio_url?: string
+  question_duration_s?: number
+  answer_duration_s?: number
+  transcript: string
+  transcript_lang: Lang
+  asr_confidence?: number
+  pivot_en: string
+  /** English pivot of the answer as it was given. */
+  answer_en: string
+  citations: Citation[]
+}
+
+/** GET /v1/admin/rater/items: the rater's current batch. */
+export interface RaterBatch {
+  batch_id: string
+  /** Pseudonymous rater label, e.g. "R-07". */
+  rater_label: string
+  total: number
+  done: number
+  /** Items not yet scored, in order. */
+  items: RaterItem[]
+  /** Captured once per rater (P1-04 S10); missing until the rater gives it. */
+  profile?: RaterProfile
+}
+
+export interface RaterProfile {
+  dialect: string
+  age_band: string
+}
+
+/** POST /v1/admin/rater/items/{id}/scores. Each score is 1 to 5. */
+export interface RaterScores {
+  relevance: number
+  correctness: number
+  groundedness: number
+  /** Spoken Twi is easy to understand; Twi voice answers only. */
+  intelligible?: number
+  note?: string
+  claims?: { idx: number; supported: boolean }[]
+}
+
+export type TagReason =
+  | "asr_misheard"
+  | "retrieval_missed"
+  | "answer_wrong"
+  | "out_of_scope"
+  | "twi_unclear"
+
+export interface TurnTag {
+  reason: TagReason
+  note?: string
+  tagged_at: string
+}
+
+/** GET /v1/admin/turns filters. The three flags combine with OR; none set means all turns. */
+export interface AdminTurnFilters {
+  low_rating?: boolean
+  idk?: boolean
+  low_confidence?: boolean
+  mode?: Mode
+  dialect?: string
+  source?: TurnSource
+}
+
+export interface AdminTurnSummary {
+  id: string
+  turn_ref: string
+  topic: string
+  mode: Mode
+  source: TurnSource
+  dialect?: string
+  rating?: RatingFace
+  idk: boolean
+  asr_confidence?: number
+  /** Short label for the list, e.g. "Dose", "Out of scope". */
+  label?: string
+  tag?: TurnTag
+  created_at: string
+}
+
+/** GET /v1/admin/turns/{id}. Audio only where consent layer 3 allows it, or `is_test`. */
+export interface AdminTurnDetail extends AdminTurnSummary {
+  transcript: string
+  transcript_lang: Lang
+  pivot_en?: string
+  answer_en: string
+  comment?: string
+  citations: Citation[]
+  audio: { status: "kept"; url: string } | { status: "not_kept" | "typed" }
+  soil?: { reading: string; age: string; simulated: boolean }
+  weather?: { used: boolean; summary?: string }
 }

@@ -4,6 +4,9 @@
  */
 
 import type {
+  AdminTurnDetail,
+  AdminTurnFilters,
+  AdminTurnSummary,
   ClientTimings,
   ConfirmRequest,
   ConsentLayer,
@@ -17,12 +20,16 @@ import type {
   OtpVerifyResponse,
   ProvisionalSessionRequest,
   ProvisionalSessionResponse,
+  RaterBatch,
+  RaterProfile,
+  RaterScores,
   RatingRequest,
   RecordConsentRequest,
   RenditionResponse,
   StartConversationResponse,
   SubmitTurnRequest,
   SubmitTurnResponse,
+  TurnTag,
 } from "./contract"
 import type { RenditionEvent, TurnEvent } from "./events"
 
@@ -89,5 +96,22 @@ export interface SonovaremApi {
       renditionId: string,
       onEvent: (event: RenditionEvent) => void,
     ): Unsubscribe
+  }
+  /** Team views (S10, S11). The server checks the rater / operator role (P1-05 TB6). */
+  admin: {
+    /** GET /v1/admin/rater/items */
+    raterBatch(): Promise<RaterBatch>
+    /** Proposed: PUT /v1/admin/rater/profile (dialect and age band, once per rater). */
+    setRaterProfile(profile: RaterProfile): Promise<void>
+    /** POST /v1/admin/rater/items/{id}/scores */
+    scoreItem(itemId: string, scores: RaterScores): Promise<void>
+    /** GET /v1/admin/turns */
+    turns(filters: AdminTurnFilters): Promise<AdminTurnSummary[]>
+    /** GET /v1/admin/turns/{id} */
+    turn(id: string): Promise<AdminTurnDetail>
+    /** Proposed: PUT /v1/admin/turns/{id}/tag */
+    tagTurn(id: string, tag: Omit<TurnTag, "tagged_at">): Promise<TurnTag>
+    /** Proposed: GET /v1/admin/turns/export?tagged=true (for WP27). */
+    exportTagged(): Promise<AdminTurnDetail[]>
   }
 }

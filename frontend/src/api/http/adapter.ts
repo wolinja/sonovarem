@@ -40,5 +40,14 @@ export function createHttpApi(): SonovaremApi {
       renditionTw: fail,
       renditionEvents: () => notImplemented(),
     },
+    admin: {
+      raterBatch: fail,
+      setRaterProfile: fail,
+      scoreItem: fail,
+      turns: fail,
+      turn: fail,
+      tagTurn: fail,
+      exportTagged: fail,
+    },
   }
 }

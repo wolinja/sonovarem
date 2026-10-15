@@ -19,6 +19,7 @@ import {
 } from "../contract"
 import type { RenditionEvent, TurnEvent, TurnEventName } from "../events"
 import type { SonovaremApi, Unsubscribe } from "../port"
+import { createMockAdmin, resetMockTeam } from "./admin"
 import { type Clock, realClock } from "./clock"
 import {
   answers,
@@ -475,6 +476,8 @@ export function createMockApi(clock: Clock = realClock): {
         )
       },
     },
+
+    admin: createMockAdmin(latency, ensureOnline),
   }
 
   const controls: MockControls = {
@@ -494,6 +497,7 @@ export function createMockApi(clock: Clock = realClock): {
     resetServer() {
       db = { users: {} }
       save()
+      resetMockTeam()
       notify()
     },
     subscribe(listener) {
