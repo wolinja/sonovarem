@@ -19,6 +19,9 @@ import { Route as SettingsIndexRouteImport } from './routes/settings/index'
 import { Route as SettingsDeleteRouteImport } from './routes/settings/delete'
 import { Route as SignInIndexRouteImport } from './routes/sign-in/index'
 import { Route as SignInCodeRouteImport } from './routes/sign-in/code'
+import { Route as TeamIndexRouteImport } from './routes/team/index'
+import { Route as TeamRateRouteImport } from './routes/team/rate'
+import { Route as TeamReviewRouteImport } from './routes/team/review'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -70,6 +73,21 @@ const SignInCodeRoute = SignInCodeRouteImport.update({
   path: '/sign-in/code',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TeamIndexRoute = TeamIndexRouteImport.update({
+  id: '/team/',
+  path: '/team/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TeamRateRoute = TeamRateRouteImport.update({
+  id: '/team/rate',
+  path: '/team/rate',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TeamReviewRoute = TeamReviewRouteImport.update({
+  id: '/team/review',
+  path: '/team/review',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -80,8 +98,11 @@ export interface FileRoutesByFullPath {
   '/under-18': typeof Under18Route
   '/settings/delete': typeof SettingsDeleteRoute
   '/sign-in/code': typeof SignInCodeRoute
+  '/team/rate': typeof TeamRateRoute
+  '/team/review': typeof TeamReviewRoute
   '/settings/': typeof SettingsIndexRoute
   '/sign-in/': typeof SignInIndexRoute
+  '/team/': typeof TeamIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -92,8 +113,11 @@ export interface FileRoutesByTo {
   '/under-18': typeof Under18Route
   '/settings/delete': typeof SettingsDeleteRoute
   '/sign-in/code': typeof SignInCodeRoute
+  '/team/rate': typeof TeamRateRoute
+  '/team/review': typeof TeamReviewRoute
   '/settings': typeof SettingsIndexRoute
   '/sign-in': typeof SignInIndexRoute
+  '/team': typeof TeamIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -105,8 +129,11 @@ export interface FileRoutesById {
   '/under-18': typeof Under18Route
   '/settings/delete': typeof SettingsDeleteRoute
   '/sign-in/code': typeof SignInCodeRoute
+  '/team/rate': typeof TeamRateRoute
+  '/team/review': typeof TeamReviewRoute
   '/settings/': typeof SettingsIndexRoute
   '/sign-in/': typeof SignInIndexRoute
+  '/team/': typeof TeamIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -119,8 +146,11 @@ export interface FileRouteTypes {
     | '/under-18'
     | '/settings/delete'
     | '/sign-in/code'
+    | '/team/rate'
+    | '/team/review'
     | '/settings/'
     | '/sign-in/'
+    | '/team/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -131,8 +161,11 @@ export interface FileRouteTypes {
     | '/under-18'
     | '/settings/delete'
     | '/sign-in/code'
+    | '/team/rate'
+    | '/team/review'
     | '/settings'
     | '/sign-in'
+    | '/team'
   id:
     | '__root__'
     | '/'
@@ -143,8 +176,11 @@ export interface FileRouteTypes {
     | '/under-18'
     | '/settings/delete'
     | '/sign-in/code'
+    | '/team/rate'
+    | '/team/review'
     | '/settings/'
     | '/sign-in/'
+    | '/team/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -156,8 +192,11 @@ export interface RootRouteChildren {
   Under18Route: typeof Under18Route
   SettingsDeleteRoute: typeof SettingsDeleteRoute
   SignInCodeRoute: typeof SignInCodeRoute
+  TeamRateRoute: typeof TeamRateRoute
+  TeamReviewRoute: typeof TeamReviewRoute
   SettingsIndexRoute: typeof SettingsIndexRoute
   SignInIndexRoute: typeof SignInIndexRoute
+  TeamIndexRoute: typeof TeamIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -232,6 +271,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignInCodeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/team/': {
+      id: '/team/'
+      path: '/team'
+      fullPath: '/team/'
+      preLoaderRoute: typeof TeamIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/team/rate': {
+      id: '/team/rate'
+      path: '/team/rate'
+      fullPath: '/team/rate'
+      preLoaderRoute: typeof TeamRateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/team/review': {
+      id: '/team/review'
+      path: '/team/review'
+      fullPath: '/team/review'
+      preLoaderRoute: typeof TeamReviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -244,8 +304,11 @@ const rootRouteChildren: RootRouteChildren = {
   Under18Route: Under18Route,
   SettingsDeleteRoute: SettingsDeleteRoute,
   SignInCodeRoute: SignInCodeRoute,
+  TeamRateRoute: TeamRateRoute,
+  TeamReviewRoute: TeamReviewRoute,
   SettingsIndexRoute: SettingsIndexRoute,
   SignInIndexRoute: SignInIndexRoute,
+  TeamIndexRoute: TeamIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
