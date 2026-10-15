@@ -31,6 +31,8 @@ extend-ignore-re = [
 [tool.typos.default.extend-words]
 # Creative Commons licence term (NC-ND) in the spec
 ND = "ND"
+# Prompt IDs PR-WRK-01..06 ("working" prompts) in P1-04 §4.3 and the frontend
+WRK = "WRK"
 
 [tool.typos.default.extend-identifiers]
 alls = "alls"

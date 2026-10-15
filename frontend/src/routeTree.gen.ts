@@ -10,33 +10,193 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AskRouteImport } from './routes/ask'
+import { Route as ConsentRouteImport } from './routes/consent'
+import { Route as MicrophoneRouteImport } from './routes/microphone'
+import { Route as ModeRouteImport } from './routes/mode'
+import { Route as Under18RouteImport } from './routes/under-18'
+import { Route as SettingsIndexRouteImport } from './routes/settings/index'
+import { Route as SettingsDeleteRouteImport } from './routes/settings/delete'
+import { Route as SignInIndexRouteImport } from './routes/sign-in/index'
+import { Route as SignInCodeRouteImport } from './routes/sign-in/code'
+import { Route as TeamIndexRouteImport } from './routes/team/index'
+import { Route as TeamRateRouteImport } from './routes/team/rate'
+import { Route as TeamReviewRouteImport } from './routes/team/review'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AskRoute = AskRouteImport.update({
+  id: '/ask',
+  path: '/ask',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConsentRoute = ConsentRouteImport.update({
+  id: '/consent',
+  path: '/consent',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MicrophoneRoute = MicrophoneRouteImport.update({
+  id: '/microphone',
+  path: '/microphone',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ModeRoute = ModeRouteImport.update({
+  id: '/mode',
+  path: '/mode',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Under18Route = Under18RouteImport.update({
+  id: '/under-18',
+  path: '/under-18',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsIndexRoute = SettingsIndexRouteImport.update({
+  id: '/settings/',
+  path: '/settings/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsDeleteRoute = SettingsDeleteRouteImport.update({
+  id: '/settings/delete',
+  path: '/settings/delete',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignInIndexRoute = SignInIndexRouteImport.update({
+  id: '/sign-in/',
+  path: '/sign-in/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignInCodeRoute = SignInCodeRouteImport.update({
+  id: '/sign-in/code',
+  path: '/sign-in/code',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TeamIndexRoute = TeamIndexRouteImport.update({
+  id: '/team/',
+  path: '/team/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TeamRateRoute = TeamRateRouteImport.update({
+  id: '/team/rate',
+  path: '/team/rate',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TeamReviewRoute = TeamReviewRouteImport.update({
+  id: '/team/review',
+  path: '/team/review',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ask': typeof AskRoute
+  '/consent': typeof ConsentRoute
+  '/microphone': typeof MicrophoneRoute
+  '/mode': typeof ModeRoute
+  '/under-18': typeof Under18Route
+  '/settings/delete': typeof SettingsDeleteRoute
+  '/sign-in/code': typeof SignInCodeRoute
+  '/team/rate': typeof TeamRateRoute
+  '/team/review': typeof TeamReviewRoute
+  '/settings/': typeof SettingsIndexRoute
+  '/sign-in/': typeof SignInIndexRoute
+  '/team/': typeof TeamIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ask': typeof AskRoute
+  '/consent': typeof ConsentRoute
+  '/microphone': typeof MicrophoneRoute
+  '/mode': typeof ModeRoute
+  '/under-18': typeof Under18Route
+  '/settings/delete': typeof SettingsDeleteRoute
+  '/sign-in/code': typeof SignInCodeRoute
+  '/team/rate': typeof TeamRateRoute
+  '/team/review': typeof TeamReviewRoute
+  '/settings': typeof SettingsIndexRoute
+  '/sign-in': typeof SignInIndexRoute
+  '/team': typeof TeamIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ask': typeof AskRoute
+  '/consent': typeof ConsentRoute
+  '/microphone': typeof MicrophoneRoute
+  '/mode': typeof ModeRoute
+  '/under-18': typeof Under18Route
+  '/settings/delete': typeof SettingsDeleteRoute
+  '/sign-in/code': typeof SignInCodeRoute
+  '/team/rate': typeof TeamRateRoute
+  '/team/review': typeof TeamReviewRoute
+  '/settings/': typeof SettingsIndexRoute
+  '/sign-in/': typeof SignInIndexRoute
+  '/team/': typeof TeamIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/ask'
+    | '/consent'
+    | '/microphone'
+    | '/mode'
+    | '/under-18'
+    | '/settings/delete'
+    | '/sign-in/code'
+    | '/team/rate'
+    | '/team/review'
+    | '/settings/'
+    | '/sign-in/'
+    | '/team/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/ask'
+    | '/consent'
+    | '/microphone'
+    | '/mode'
+    | '/under-18'
+    | '/settings/delete'
+    | '/sign-in/code'
+    | '/team/rate'
+    | '/team/review'
+    | '/settings'
+    | '/sign-in'
+    | '/team'
+  id:
+    | '__root__'
+    | '/'
+    | '/ask'
+    | '/consent'
+    | '/microphone'
+    | '/mode'
+    | '/under-18'
+    | '/settings/delete'
+    | '/sign-in/code'
+    | '/team/rate'
+    | '/team/review'
+    | '/settings/'
+    | '/sign-in/'
+    | '/team/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AskRoute: typeof AskRoute
+  ConsentRoute: typeof ConsentRoute
+  MicrophoneRoute: typeof MicrophoneRoute
+  ModeRoute: typeof ModeRoute
+  Under18Route: typeof Under18Route
+  SettingsDeleteRoute: typeof SettingsDeleteRoute
+  SignInCodeRoute: typeof SignInCodeRoute
+  TeamRateRoute: typeof TeamRateRoute
+  TeamReviewRoute: typeof TeamReviewRoute
+  SettingsIndexRoute: typeof SettingsIndexRoute
+  SignInIndexRoute: typeof SignInIndexRoute
+  TeamIndexRoute: typeof TeamIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +208,107 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ask': {
+      id: '/ask'
+      path: '/ask'
+      fullPath: '/ask'
+      preLoaderRoute: typeof AskRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/consent': {
+      id: '/consent'
+      path: '/consent'
+      fullPath: '/consent'
+      preLoaderRoute: typeof ConsentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/microphone': {
+      id: '/microphone'
+      path: '/microphone'
+      fullPath: '/microphone'
+      preLoaderRoute: typeof MicrophoneRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mode': {
+      id: '/mode'
+      path: '/mode'
+      fullPath: '/mode'
+      preLoaderRoute: typeof ModeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/under-18': {
+      id: '/under-18'
+      path: '/under-18'
+      fullPath: '/under-18'
+      preLoaderRoute: typeof Under18RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/': {
+      id: '/settings/'
+      path: '/settings'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof SettingsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/delete': {
+      id: '/settings/delete'
+      path: '/settings/delete'
+      fullPath: '/settings/delete'
+      preLoaderRoute: typeof SettingsDeleteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sign-in/': {
+      id: '/sign-in/'
+      path: '/sign-in'
+      fullPath: '/sign-in/'
+      preLoaderRoute: typeof SignInIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sign-in/code': {
+      id: '/sign-in/code'
+      path: '/sign-in/code'
+      fullPath: '/sign-in/code'
+      preLoaderRoute: typeof SignInCodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/team/': {
+      id: '/team/'
+      path: '/team'
+      fullPath: '/team/'
+      preLoaderRoute: typeof TeamIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/team/rate': {
+      id: '/team/rate'
+      path: '/team/rate'
+      fullPath: '/team/rate'
+      preLoaderRoute: typeof TeamRateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/team/review': {
+      id: '/team/review'
+      path: '/team/review'
+      fullPath: '/team/review'
+      preLoaderRoute: typeof TeamReviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AskRoute: AskRoute,
+  ConsentRoute: ConsentRoute,
+  MicrophoneRoute: MicrophoneRoute,
+  ModeRoute: ModeRoute,
+  Under18Route: Under18Route,
+  SettingsDeleteRoute: SettingsDeleteRoute,
+  SignInCodeRoute: SignInCodeRoute,
+  TeamRateRoute: TeamRateRoute,
+  TeamReviewRoute: TeamReviewRoute,
+  SettingsIndexRoute: SettingsIndexRoute,
+  SignInIndexRoute: SignInIndexRoute,
+  TeamIndexRoute: TeamIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
